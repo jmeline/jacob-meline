@@ -45,7 +45,7 @@ const Layout = ({ location, title, children }) => {
           {title}
         </Link>
       </h3>
-    )
+   )
   }
   return (
     <div
