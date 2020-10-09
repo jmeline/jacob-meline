@@ -1,6 +1,7 @@
 import React from "react"
 import { Link, graphql } from "gatsby"
 
+import styles from "../styles/dracula"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -22,15 +23,15 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
           <h1
             style={{
               marginTop: rhythm(1),
-              marginBottom: 0
+              marginBottom: 0,
             }}
           >
             {post.frontmatter.title}
           </h1>
           <p
             style={{
-              ...scale(-1 / 5),
               display: `block`,
+              color: styles.green,
               marginBottom: rhythm(1),
             }}
           >
