@@ -8,7 +8,7 @@ description: "Things I've learned from Kent's React Fundamental's workshop"
 
 JSX elements are syntactic sugar for calling:
 
-```jsx
+```js
 React.createElement(component, props, ...children)
 ```
 
