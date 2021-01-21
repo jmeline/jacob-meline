@@ -62,7 +62,6 @@ Becomes (really not pretty and it isn't sustainable for large react apps.)
     <div id="root" />
   </body>
   <script>
-
     const helloDiv = React.createElement("div", {
       children: "Hello"
     })
