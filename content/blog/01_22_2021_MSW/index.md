@@ -6,27 +6,54 @@ description: "Get better at testing your Javascript api's"
 
 After writing javascript tests for a number of years, I can say hands down testing my api's have been some of the most complicated parts of my testing. It isn't that mocking an api is difficult, it is just that I don't feel confident in my code because my code doesn't actually make the request.
 
-## Service workers
+## MSW
 
-In order to better understand the benefits MSW brings to the table, I feel it is good to provide an introduction into Service workers.
+This library is pretty neat as you can use it to both handle requests/responses while developing an application locally or when unittesting your web applications. This tool is framework agnostic and is easy to setup.
 
-Have you ever had the experience where you've been browsing a website and you are met with "This page could not be loaded"? Playing the no Internet dinosaur game is fun for only so long. We've been there. Isn't there a better way to provide rich offline experiences? This scenario is avoidable because of Service workers. Service workers are a core part of Progressive Web Apps. PWA's simply mean that a website behaviors more like an application. A major benefit of using service workers is their ability to support rich offline experiences.
+Take a look at the [react example](https://github.com/mswjs/examples/tree/master/examples/rest-react)
 
-* JS script that is registered with the browser
-* Stays registered even when the browser is offline
-* Can load content without a connection
-A few notes:
-  * Service workers runs on a separate thread, managed by the browser.
-    - It doesn't have access to the DOM
-    - Programmable network proxy
-    -
-  * Service workers use promises heavily!
-    - waiting for responses of network requests
-  * Service workers can only be registered to pages that are served over HTTPS. (mitigates man-in-the-middle-attacks)
-    - served over localhost is fine.
-  * Work with modern browsers (Sorry IE)
+### Initial setup
+
+Create a home for your mocks. 
+
+Create a couple files:
+  * ```handler.js``` - this will contain your request handlers
+  * ```browser.js``` - this will contain your local development browser setup
+  * ```server.js``` -  this will contain your mocking server setup for your unittests
+
+### Setup for developing locally ([docs](https://mswjs.io/docs/getting-started/integrate/browser))
+
+Since MSW relies on the service worker running within the browser, a service worker must be added to your public directory. This is where you application is started from. If your application was created via ```create-react-app```, this will be your ```public``` folder
+
+We first need to run the following npm init command to create the service worker that MSW will use.
+
+```bash
+$ npx msw init public/ --save
+```
+
+Within browser.js, add the following setup:
+
+```js
+import { setupWorker } from 'msw'
+import { handlers } from './handlers'
+
+export const worker = setupWorker(...handlers)
+```
+
+setupWorker will utilize the service worker created by the previous command
+
+Modify your react's ```index.js ``` and include this before the ReactDom.render call
+
+```js
+// imports removed for brevity
+
+// Start the mocking conditionally.
+if (process.env.NODE_ENV === 'development') {
+  const { worker } = require('./mocks/browser')
+  worker.start()
+}
+
+ReactDom.render(<App />. document.getElementById('root'))
+```
 
 
-#### MSW
-
-1) testing apps
