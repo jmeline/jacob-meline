@@ -40,18 +40,6 @@ As I was learning about how to do this, I was confused between __proto__ and pro
 ## Write our own version of **new**
 
 If I were to create the atarashii ('new' in Japanese) function. It will take in a function constructor.
-```js
-
-function Car(make, year) {
-  this.make = make
-  this.year = year
-  const log = () => console.log(`Car: ${this.make}, Year: ${this.year}`)
-}
-
-function atarashii() {}
-const car = atarashii(Car, "Hyundai", 2007)
-```
-
 Let us start with the first creating the instance, this will act as our context for methods that accept a ```this``` context.
 Let's copy the Constructor's prototype into the __proto__. This is needed because we need to maintain the context of our function in our new instance. Once our instance is created, we will need to apply the arguments to the Constructor with our Constructor's context. If the function returns a value, we will return that, else we will return the instance we created.
 
@@ -75,6 +63,19 @@ function atarashii(Constructor, ...args) {
   const obj = Constructor.apply(instance, args)
   return obj === Object(obj) ? obj : instance
 }
+```
+
+Let's use it.
+
+```js
+function Car(make, year) {
+  this.make = make
+  this.year = year
+  const log = () => console.log(`Car: ${this.make}, Year: ${this.year}`)
+}
+
+const car = atarashii(Car, "Hyundai", 2007)
+car.log() //Car: Hyundai, Year: 2007
 ```
 
 
